@@ -22,7 +22,8 @@ async function delay(ms) {
 
 const main = async (postNum) => {
     const browser = await puppeteer.launch({
-     headless:false});
+     headless: false,
+    });
     let curPost = postNum
     try{
         while(true) {

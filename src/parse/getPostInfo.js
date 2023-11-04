@@ -42,18 +42,22 @@ class getPostInfo{
                 creation: 0,
                 post: postNumber,
                 postExist: false,
-                isHidden: false
+                isHidden: false,
+                type:'none'
             }
-            if($(hidenSelector).text() == 'This post has been hidden by the author'){
-                post.postExist = true
-            }
+            //check post exist
+            $(hidenSelector).text() == 'This post has been hidden by the author' ? post.postExist = true : {}
+            //check is post hidden by author
             if($(postNotExistSelector).length > 0){
                 return post
             }
+
+            //get info from base post
             if($(rewardSelector).length > 0){
                 post.author = $(authorSelector).text()
                 post.reward = $(rewardSelector).text()
                 post.creation = $(timeSelector).text()
+                
             }
             post.postExist = true
             return post

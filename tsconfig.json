@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "CommonJS",
+      "outDir": "./dist",
+      "rootDir": "./src2",
+      "esModuleInterop": true
+      // Другие настройки
+    },
+    "include": ["src2/**/*.ts"],
+    "exclude": ["node_modules"]
+  }
