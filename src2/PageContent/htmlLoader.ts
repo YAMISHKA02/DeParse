@@ -1,8 +1,11 @@
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-extra";
 import { Browser, Page } from "puppeteer";
 import * as dotenv from 'dotenv'
 import path from 'path'
 import { transform } from "typescript";
+import StealthPlugin from 'puppeteer-extra-plugin-stealth'
+
+
 
 const envPath = path.resolve('.env')
 dotenv.config({path: envPath})

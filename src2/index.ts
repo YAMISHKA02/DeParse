@@ -1,4 +1,5 @@
-import puppeteer from 'puppeteer'
+import puppeteer from 'puppeteer-extra'
+import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import cheerio from 'cheerio'
 import {Telegraf} from 'telegraf'
 import * as dotenv from 'dotenv'
@@ -38,8 +39,9 @@ async function delay(ms: number) {
 const main = async (initialPostNumber: number) => {
     bot.launch()
 
+    puppeteer.use(StealthPlugin())
     BROUSER = await puppeteer.launch({
-        headless: false
+        headless: 'new',
     });
     let currentPost: number = initialPostNumber;
 
@@ -52,7 +54,7 @@ const main = async (initialPostNumber: number) => {
                     const postData = await fetchData(BROUSER, currentPost)
                     const RewardPool = parseFloat(postData.reward.substring(1))
                     console.log(`Пост ${postData.number}, награда ${postData.reward}`)
-                    if(RewardPool > 0){
+                    if(RewardPool >= 5){
                         console.log('отправляем в тг', postData.number, 'награда', RewardPool)
                         await Bot.RewardPoolMsg(postData)
                     }
@@ -60,11 +62,11 @@ const main = async (initialPostNumber: number) => {
                 }
             }
             else{
-                console.log(`Пост с номером ${currentPost} не существует. Ожидаем...`);
+                console.log(`\nПост с номером ${postNumSub100} не существует.`);
 
                 fs.writeFileSync('lastPost.json', JSON.stringify({ currentPost }));
                 console.log('Сохранено значение curPost.');
-                console.log('ждем 5 сек...')
+                console.log('ждем 30 сек...')
                 await delay(30000)
                 continue
             }
