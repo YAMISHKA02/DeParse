@@ -1,22 +1,19 @@
-# Используем официальный образ Node.js для ARM архитектуры
-FROM node
-# Устанавливаем рабочую директорию внутри контейнера
-WORKDIR /app
+FROM node:18-slim
 
-# Копируем файлы package.json и package-lock.json
-COPY package*.json ./
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-# Устанавливаем зависимости
+RUN apt-get update && apt-get install gnupg wget -y && \
+    wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg && \
+    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
+    apt-get update && \
+    apt-get install google-chrome-stable -y --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV TZ="Europe/Moscow"
+
+WORKDIR /project
+COPY package*.json .
 RUN npm install
-
-# Копируем остальные файлы проекта внутрь контейнера
 COPY . .
 
-# Определяем переменные окружения, если это необходимо
-# ENV BOT_TOKEN=your_bot_token
-
-# Определяем порт, который будет открыт в контейнере
-# EXPOSE 3000
-
-# Команда, которая будет выполняться при запуске контейнера
 CMD ["npm", "run", "parse"]

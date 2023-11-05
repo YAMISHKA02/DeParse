@@ -38,11 +38,14 @@ async function delay(ms: number) {
 
 const main = async (initialPostNumber: number) => {
     bot.launch()
-
     puppeteer.use(StealthPlugin())
-    BROUSER = await puppeteer.launch({
-        headless: 'new',
-    });
+    BROUSER = await puppeteer.launch(
+        {
+            headless: 'new',
+            executablePath: '/usr/bin/google-chrome',
+            args: ['--mute-audio', '--no-sandbox']
+        }
+    );
     let currentPost: number = initialPostNumber;
 
     while(true){
