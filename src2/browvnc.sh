@@ -42,6 +42,7 @@ mkdir -p "$HOME/chromium/config"
 read -p "Username для браузера: " USERNAME
 read -sp "Пароль для доступа к браузеру: " PASSWORD
 echo ""
+echo "{\"username\":\"$USERNAME\", \"password\":\"$PASSWORD\"}" > "$CREDENTIALS_FILE"
 
 # Проверка наличия Docker
 if ! [ -x "$(command -v docker)" ]; then
